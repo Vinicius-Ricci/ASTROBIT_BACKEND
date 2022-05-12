@@ -100,10 +100,17 @@ namespace ASTROBIT_BACKEND.Controllers
             {
                 return new LoginResponse { Erro = "Credenciais Invalidas" };
             }
-            return (new LoginResponse
+            else
             {
-                Success = "Usuario logado com sucesso!"
-            });
+                return (new LoginResponse
+                {
+                    Success = "Logado com sucesso",
+                    UsuarioId = usuario
+                });
+            }
+
+            
+            
         }
     }
 }
