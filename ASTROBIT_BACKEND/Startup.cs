@@ -24,6 +24,16 @@ namespace ASTROBIT_BACKEND
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddCors(option =>
+            {
+                option.AddPolicy("basico", builder =>
+                {
+                    builder.AllowAnyOrigin();
+                    builder.AllowAnyHeader();
+                    builder.AllowAnyMethod();
+                });
+
+            });
             services.AddControllersWithViews();
             services.AddDbContext<Contexto>(a => a.UseMySQL("server=localhost;database=astrobitBD;user=root;password=;SslMode=none"));
         }
@@ -45,6 +55,7 @@ namespace ASTROBIT_BACKEND
             app.UseStaticFiles();
 
             app.UseRouting();
+            app.UseCors("basico");
 
             app.UseAuthorization();
 
