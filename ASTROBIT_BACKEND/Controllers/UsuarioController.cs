@@ -43,74 +43,79 @@ namespace ASTROBIT_BACKEND.Controllers
 
         // POST api/Usuario
         [HttpPost]
-        public int Post(Usuario usuario)
+        public Usuario Post(Usuario usuario)
         {
-            db.USUARIO.Add(usuario);
-            db.SaveChanges();
-            return usuario.Id;
+            var Id= usuario.Id;
+            var erro = "Usuario ja existe";
+            var UserVerifica = db.USUARIO.Where(a => a.Login == usuario.Login);
+
+            if(UserVerifica.Count ()> 0)
+            {
+                 BadRequest(erro);
+            }
+            else
+            {
+                db.USUARIO.Add(usuario);
+                db.SaveChanges();
+            }
+            return usuario;
         }
 
         // PUT api/Usuario/5
         [HttpPut("{id}")]
-        public async Task<UpdateResponse> Put(int id, [FromBody] Usuario usuario)
+        public  IActionResult Put(int id, [FromBody] Usuario usuario)
         {
             if(id != usuario.Id)
             {
-                return new UpdateResponse { Erro = "Não foi possivel alterar!" };
+                return BadRequest(new { Erro = "Não foi possivel alterar!" });
             }
 
             db.USUARIO.Update(usuario);
 
             try
             {
-                await db.SaveChangesAsync();
+                db.SaveChangesAsync();
             }
             catch
             {
-                return new UpdateResponse { Erro = "Não foi possivel salvar!" };
+                return BadRequest(new { Erro = "Não foi possivel salvar!" });
             }
 
-            return new UpdateResponse { Success = "Usuario alterado com sucesso!" };
+            return Ok(new { Success = "Usuario alterado com sucesso!" });
         }
 
         // DELETE api/<UsuarioController>/5
         [HttpDelete("{id}")]
-        public async Task<RegisterResponse> Delete(int id)
+        public IActionResult Delete(int id)
         {
-            var remove = await db.USUARIO.FindAsync(id);
+            var remove = db.USUARIO.Find(id);
             if (remove == null)
             {
-                return new RegisterResponse { Erro = "Não foi possivel registrar!" };
+                return BadRequest(new { Erro = "Não foi possivel deletar!" });
             }
 
             db.USUARIO.Remove(remove);
-            await db.SaveChangesAsync();
+            db.SaveChanges();
 
-            return (new RegisterResponse
-            {
-                Success = "Usuario registrado com sucesso!"
-            });
+            return Ok(new { Success = "Usuario deletado com sucesso!" });
         }
 
         [HttpPost("login")]
-        public LoginResponse Login([FromBody]Credencial credencial)
+        public IActionResult Login([FromBody] Usuario user)
         {
-            var usuario = db.USUARIO.Where(a => a.Login == credencial.Login && a.Senha == credencial.Senha).FirstOrDefault();
+            var usuario = db.USUARIO.Where(a => a.Login == user.Login && a.Senha == user.Senha).FirstOrDefault();
             if(usuario == null)
             {
-                return new LoginResponse { Erro = "Credenciais Invalidas" };
+                return BadRequest(new { Erro = "Credenciais Invalidas" });
             }
             else
             {
-                return (new LoginResponse
+                return Ok(new LoginResponse
                 {
                     Success = "Logado com sucesso",
                     UsuarioId = usuario
                 });
             }
-
-            
-            
         }
     }
 }
