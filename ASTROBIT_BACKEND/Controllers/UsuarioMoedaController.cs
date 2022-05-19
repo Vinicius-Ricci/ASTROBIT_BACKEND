@@ -19,16 +19,28 @@ namespace ASTROBIT_BACKEND.Controllers
             db = contexto;
         }
 
-        [HttpGet("[controller]/[action]/{UsuarioId}/{MoedaId}")]
-        public MoedaResponse Favoritar(int UsuarioId, int MoedaId)
+        [Route("Favoritar/{UsuarioId}/{MoedaId}")]
+        [HttpGet]
+        public MoedaResponse Favoritar(int UsuarioId, string MoedaId)
         {
             Entidades.UsuarioMoeda novo_registro = new Entidades.UsuarioMoeda();
-            novo_registro.Moeda_Id = MoedaId;
-            novo_registro.Usuario_Id = UsuarioId;
+            novo_registro.MoedaId = MoedaId;
+            novo_registro.UsuarioId = UsuarioId;
             db.UsuarioMoeda.Add(novo_registro);
             db.SaveChanges();
 
-            return new MoedaResponse { Success = "Favoritado"};
+            return new MoedaResponse { Success = "Favoritado" };
+        }
+
+        [Route("DeletarMoeda/{MoedaId}")]
+        [HttpDelete]
+        public MoedaResponse DeletarMoeda(string MoedaId)
+        {
+            db.UsuarioMoeda.Remove(
+            db.UsuarioMoeda.Where(a => a.MoedaId == MoedaId).FirstOrDefault()
+            );
+            db.SaveChanges();
+            return new MoedaResponse { Success = "Favorito removido" };
         }
     }
 }

@@ -8,9 +8,9 @@ namespace ASTROBIT_BACKEND.Entidades
     public class UsuarioMoeda
     {
         public int Id { get; set; }
-        public int Usuario_Id { get; set; }
+        public int UsuarioId { get; set; }
         public Usuario Usuario { get; set; }
-        public int Moeda_Id { get; set; }
+        public string MoedaId { get; set; }
         public Moeda Moeda { get; set; }
     }
 }

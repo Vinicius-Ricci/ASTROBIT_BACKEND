@@ -1,6 +1,7 @@
 ﻿using ASTROBIT_BACKEND.Entidades;
 using ASTROBIT_BACKEND.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -30,14 +31,18 @@ namespace ASTROBIT_BACKEND.Controllers
 
         // GET api/<UsuarioController>/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Usuario>> Get(int id)
+        public UsuarioModel Get(int id)
         {
-            var usuario = await db.USUARIO.FindAsync(id);
-            if( usuario == null)
+            var usuario = db.USUARIO.Find(id);
+            var favoritosUsuarios = db.UsuarioMoeda.Where(a => a.UsuarioId == id).Include(a => a.Moeda);
+            UsuarioModel retorno = new UsuarioModel();
+            retorno.usuario = db.USUARIO.Find(id);
+            retorno.listaMoeda = db.UsuarioMoeda.Where(a => a.UsuarioId == id).Include(a => a.Moeda).ToList();
+            if ( usuario == null)
             {
-                return NotFound();
+                return new UsuarioModel();
             }
-            return usuario;
+            return retorno;
         }
 
 
