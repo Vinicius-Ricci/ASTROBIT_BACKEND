@@ -49,8 +49,8 @@ namespace ASTROBIT_BACKEND.Controllers
         // POST api/Usuario
         [HttpPost]
         public Usuario Post(Usuario usuario)
-        {
-            var Id= usuario.Id;
+        {      
+            var Id = usuario.Id;
             var erro = "Usuario ja existe";
             var UserVerifica = db.USUARIO.Where(a => a.Login == usuario.Login);
 
