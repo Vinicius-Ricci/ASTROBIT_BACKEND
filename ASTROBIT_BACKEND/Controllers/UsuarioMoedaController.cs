@@ -32,12 +32,12 @@ namespace ASTROBIT_BACKEND.Controllers
             return new MoedaResponse { Success = "Favoritado" };
         }
 
-        [Route("DeletarMoeda/{MoedaId}")]
+        [Route("DeletarMoeda/{MoedaId}/{UsuarioId}")]
         [HttpDelete]
-        public MoedaResponse DeletarMoeda(string MoedaId)
+        public MoedaResponse DeletarMoeda(string MoedaId, int UsuarioId)
         {
             db.UsuarioMoeda.Remove(
-            db.UsuarioMoeda.Where(a => a.MoedaId == MoedaId).FirstOrDefault()
+            db.UsuarioMoeda.Where(a => a.MoedaId == MoedaId && a.UsuarioId == UsuarioId).FirstOrDefault()
             );
             db.SaveChanges();
             return new MoedaResponse { Success = "Favorito removido" };
