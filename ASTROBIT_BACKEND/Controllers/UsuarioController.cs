@@ -60,6 +60,7 @@ namespace ASTROBIT_BACKEND.Controllers
             }
             else
             {
+                usuario.DataCreated = DateTime.Now;
                 db.USUARIO.Add(usuario);
                 db.SaveChanges();
             }

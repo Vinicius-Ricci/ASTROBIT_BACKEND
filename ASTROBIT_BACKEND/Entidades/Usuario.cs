@@ -12,5 +12,6 @@ namespace ASTROBIT_BACKEND.Entidades
         public string Login { get; set; }
         public string Senha { get; set; }
         public string TipoPerfil { get; set; }
+        public DateTime DataCreated { get; set; }
     }
 }
