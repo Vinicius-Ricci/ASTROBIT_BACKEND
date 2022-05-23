@@ -79,7 +79,7 @@ namespace ASTROBIT_BACKEND.Controllers
 
             try
             {
-                db.SaveChangesAsync();
+                db.SaveChanges();
             }
             catch
             {
